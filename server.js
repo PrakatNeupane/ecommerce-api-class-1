@@ -17,11 +17,15 @@ app.use(helmet())
 // mongodb connect
 dbConnect()
 // routers
+import adminRouter from './src/routers/adminRouter.js'
+app.use('/api/v1/admin', adminRouter)
+
 app.get('/', (req, res) => {
     res.json({
         message: "You have reached the admin api",
     })
 })
+
 
 // error handling
 app.use((err, req, res, next) => {
