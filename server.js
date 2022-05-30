@@ -4,6 +4,7 @@ const app = express()
 import cors from 'cors'
 import morgan from "morgan";
 import helmet from "helmet";
+import { dbConnect } from "./src/config/dbConfig.js";
 
 const PORT = process.env.PORT || 8000
 
@@ -14,7 +15,7 @@ app.use(morgan('dev'))
 app.use(helmet())
 
 // mongodb connect
-
+dbConnect()
 // routers
 app.get('/', (req, res) => {
     res.json({
