@@ -1,6 +1,6 @@
 import AdminSchema from "./Admin.schema.js";
 
-const insertAdmin = obj => {
+export const insertAdmin = obj => {
     return AdminSchema(obj).save()
 }
 

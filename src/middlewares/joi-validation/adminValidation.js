@@ -8,7 +8,7 @@ export const newAdminValidation = (req, res, next) => {
         phone: Joi.string().required().min(10).max(15),
         dob: Joi.date().allow(null),
         address: Joi.string().allow(null).allow(""),
-        pass: Joi.string().required(null),
+        password: Joi.string().required(null),
     })
     const { values, error } = schema.validate(req.body)
     console.log(error?.message)
@@ -18,9 +18,9 @@ export const newAdminValidation = (req, res, next) => {
             message: error.message
         })
     }
-    res.json({
-        status: "success",
-        message: "All good"
-    })
-    // next()
+    // res.json({
+    //     status: "success",
+    //     message: "All good"
+    // })
+    next()
 }

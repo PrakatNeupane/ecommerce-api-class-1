@@ -29,6 +29,8 @@ app.get('/', (req, res) => {
 
 // error handling
 app.use((err, req, res, next) => {
+    // log in file system or time seriew db like cloudwatch
+    res.status(err.status || 400)
     res.json({
         status: 'error',
         message: err.message,
