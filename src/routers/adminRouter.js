@@ -1,9 +1,10 @@
 import express from 'express'
 import { encryptPassword } from '../../helpers/bcrypthelper.js'
-import { insertAdmin } from '../config/models/admin/Admin.model.js'
-import { newAdminValidation } from '../middlewares/joi-validation/adminValidation.js'
+import { insertAdmin, updateAdmin } from '../config/models/admin/Admin.model.js'
+import { emailVerificationValidation, newAdminValidation } from '../middlewares/joi-validation/adminValidation.js'
 const router = express.Router()
 import { v4 as uuidv4 } from 'uuid';
+import { sendMail } from '../../helpers/emailHelper.js'
 
 router.get('/', (req, res) => {
     res.json({
@@ -25,8 +26,9 @@ router.post('/', newAdminValidation, async (req, res, next) => {
         console.log(result)
         if (result?._id) {
             // create unique url and send it to the user email
-            const url = `${ROOT_URL}/admin/verify-email/?c=${result.emailValidationCode}&e=${result.email}`
+            const url = `${process.env.ROOT_URL}/admin/verify-email/?c=${result.emailValidationCode}&e=${result.email}`
             // send email to user
+            sendMail({ fName: result.fName, url })
             res.json({
                 status: "success",
                 message: 'New admin created succesfully',
@@ -49,6 +51,26 @@ router.post('/', newAdminValidation, async (req, res, next) => {
     }
 
 
+})
+
+// email verification router
+router.post('/email-verification', emailVerificationValidation, async (req, res) => {
+    console.log(req.body)
+    const filter = req.body
+    const update = { status: 'active' }
+
+    const result = await updateAdmin(filter, update)
+    console.log(result)
+
+    result?._id ?
+        res.json({
+            status: 'success',
+            message: "email successfully verified. You may login now"
+        }) :
+        res.json({
+            status: 'error',
+            message: "Invalid or expired verification link"
+        })
 })
 
 router.patch('/', (req, res) => {

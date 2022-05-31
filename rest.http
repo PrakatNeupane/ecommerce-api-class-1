@@ -15,12 +15,23 @@ Content-Type: application/json
 {
     "fName": "Prakat",
     "lName": "Neupane", 
-    "email": "prakat@gmail.com",
+    "email": "pn@gmail.com",
     "phone": "1212121223",
     "address":"1212", 
     "dob":"2020-01-01",
     "password": "admin"
 }
+### post admin email verification API ###
+
+POST http://localhost:8000/api/v1/admin/email-verification
+Content-Type: application/json
+
+{
+   
+    "email": "pn@gmail.com",
+    "emailValidationCode": "db054e80-32d0-41b0-a5e4-ce36930ea35b"
+}
+
 
 ### patch admin API ###
 
